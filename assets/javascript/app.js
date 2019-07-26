@@ -7,15 +7,18 @@ function ajax(searchItem){
         url: queryURL + "&q=" + searchItem,
         method: "GET"
     }).then(function(response){
-
+        console.log(response)
         for(i=0; i<10; i++){
             var div = $("<div>")
             var img = $("<img>")
+            var p = $("<p>")
             img.attr("still-image", response.data[i].images.fixed_height_still.url)
             img.attr("animated-image", response.data[i].images.fixed_height.url)
             img.attr("src", img.attr("still-image"))
             img.attr("state", "still")
+            p.text("Rating: " + response.data[i].rating.toUpperCase())
             div.append(img)
+            div.append(p)
             $("#gifs").append(div)
         }
 
