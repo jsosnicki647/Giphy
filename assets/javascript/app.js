@@ -36,19 +36,33 @@ function ajax(searchItem){
     })
 }
 
-$(document).ready(function(){
+function renderButtons(){
+    $("#buttons").empty()
+    
     for(i=0; i<food.length; i++){
         var button = $("<button>")
         button.text(food[i])
         button.attr("data-food", food[i])
+        button.addClass("button")
         $("#buttons").append(button)
     }
-    $("button").on("click", function(){
+
+    $(".button").on("click", function(){
         $("#gifs").empty()
         var foodItem = $(this).data("food")
         ajax(foodItem)
     })
-    
+}
+
+
+$(document).ready(function(){
+    renderButtons()
+
+    $("#add-button").on("click", function(){
+        food.push($("#add-item").val())
+        $("#add-item").val("")
+        renderButtons()
+    })
 })
 
 
