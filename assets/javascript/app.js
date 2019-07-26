@@ -8,7 +8,28 @@ function ajax(searchItem){
         method: "GET"
     }).then(function(response){
 
-        console.log(response)
+        for(i=0; i<10; i++){
+            var div = $("<div>")
+            var img = $("<img>")
+            img.attr("still-image", response.data[i].images.fixed_height_still.url)
+            img.attr("animated-image", response.data[i].images.fixed_height.url)
+            img.attr("src", img.attr("still-image"))
+            img.attr("state", "still")
+            div.append(img)
+            $("#gifs").append(div)
+        }
+
+        $("img").on("click", function(){
+
+            if($(this).attr("state") == "still"){
+                $(this).attr("src", $(this).attr("animated-image"))
+                $(this).attr("state", "animated")
+            }
+            else{
+                $(this).attr("src", $(this).attr("still-image"))
+                $(this).attr("state", "still")
+            }
+        })
     })
 }
 
@@ -16,17 +37,19 @@ $(document).ready(function(){
     for(i=0; i<food.length; i++){
         var button = $("<button>")
         button.text(food[i])
-        button.attr("data-food" , food[i])
+        button.attr("data-food", food[i])
         $("#buttons").append(button)
     }
     $("button").on("click", function(){
+        $("#gifs").empty()
         var foodItem = $(this).data("food")
         ajax(foodItem)
     })
+    
 })
 
 
-
+    
 
 
 
