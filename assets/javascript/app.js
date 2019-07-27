@@ -55,6 +55,10 @@ function renderButtons(){
         var foodItem = $(this).data("food")
         ajax(foodItem)
     })
+
+    $("#add-item").on("click", function(){
+        $("#add-item").attr("placeholder", "")
+    })
 }
 
 $(document).ready(function(){
@@ -62,6 +66,7 @@ $(document).ready(function(){
 
     $("#add-button").on("click", function(e){
         e.preventDefault()
+        $("#add-item").attr("placeholder", "add new item")
         food.push($("#add-item").val())
         $("#add-item").val("")
         renderButtons()
