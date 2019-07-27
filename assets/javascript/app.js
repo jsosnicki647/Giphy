@@ -11,6 +11,7 @@ function ajax(searchItem){
             var div = $("<div>")
             var img = $("<img>")
             var p = $("<p>")
+            div.addClass("inline")
             img.attr("still-image", response.data[i].images.fixed_height_still.url)
             img.attr("animated-image", response.data[i].images.fixed_height.url)
             img.attr("src", img.attr("still-image"))
@@ -42,7 +43,7 @@ function renderButtons(){
         var button = $("<button>")
         button.text(food[i])
         button.attr("data-food", food[i])
-        button.addClass("button")
+        button.addClass("button btn btn-secondary")
         $("#buttons").append(button)
     }
 
@@ -52,7 +53,6 @@ function renderButtons(){
         ajax(foodItem)
     })
 }
-
 
 $(document).ready(function(){
     renderButtons()
