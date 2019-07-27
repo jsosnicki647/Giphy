@@ -3,11 +3,6 @@
     max-width: 600px;
 }
 
-.inline{
-    display: inline;
-}
-
-
 .button{
     margin: 0 .5em .5em 0;
 }
@@ -23,6 +18,15 @@
     margin-top: 1em;
 }
 
+.title{
+    margin-bottom: 0;
+    font-weight: bold;
+}
+
+img{
+    margin: .25em;
+}
+
 form{
     padding: .5em;
     margin: .5em 0 1em 0;
@@ -31,3 +35,4 @@ form{
 body{
     background-image: url("../images/background.jpg");
 }
+

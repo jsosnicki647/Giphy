@@ -10,15 +10,18 @@ function ajax(searchItem){
         for(i=0; i<10; i++){
             var div = $("<div>")
             var img = $("<img>")
-            var p = $("<p>")
-            div.addClass("inline")
+            var rating = $("<p>")
+            var title = $("<p>")
             img.attr("still-image", response.data[i].images.fixed_height_still.url)
             img.attr("animated-image", response.data[i].images.fixed_height.url)
             img.attr("src", img.attr("still-image"))
             img.attr("state", "still")
-            p.text("Rating: " + response.data[i].rating.toUpperCase())
+            title.text(response.data[i].title.split("GIF")[0])
+            title.addClass("title")
+            rating.text("Rating: " + response.data[i].rating.toUpperCase())
+            div.append(title)
             div.append(img)
-            div.append(p)
+            div.append(rating)
             $("#gifs").append(div)
         }
 
