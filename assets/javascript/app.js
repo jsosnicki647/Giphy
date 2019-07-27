@@ -1,4 +1,3 @@
-
 var food = ["pizza","fried chicken","sandwich","bbq ribs","ice cream","cereal","hamburger","hot dog","egg roll","steak"]
 var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=M5uE8mhUUUwubG4tLZfbkiAk6igcSkg8&limit=10"
 
@@ -58,42 +57,10 @@ function renderButtons(){
 $(document).ready(function(){
     renderButtons()
 
-    $("#add-button").on("click", function(){
+    $("#add-button").on("click", function(e){
+        e.preventDefault()
         food.push($("#add-item").val())
         $("#add-item").val("")
         renderButtons()
     })
 })
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
