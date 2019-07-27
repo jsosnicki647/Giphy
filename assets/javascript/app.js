@@ -1,5 +1,6 @@
 var food = ["pizza","fried chicken","sandwich","bbq ribs","ice cream","cereal","hamburger","hot dog","egg roll","steak"]
 var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=M5uE8mhUUUwubG4tLZfbkiAk6igcSkg8&limit=10"
+var keyStrokes = 0
 
 function ajax(searchItem){
     $.ajax({
@@ -58,6 +59,24 @@ function renderButtons(){
 
     $("#add-item").on("click", function(){
         $("#add-item").attr("placeholder", "")
+    })
+
+    $("#add-item").keyup(function(e){
+        if(e.which == 8){
+            if(keyStrokes != 0){
+                keyStrokes--
+            }
+        }
+        else{
+            if(keyStrokes != 20){
+                keyStrokes++
+            }
+            else{
+                alert("20 characters max!")
+            }
+        }
+        console.log(keyStrokes)
+        $("#char-remaining").text("Characters Remaining: " + (20 - keyStrokes))
     })
 }
 
