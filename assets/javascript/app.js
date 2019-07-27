@@ -66,9 +66,16 @@ $(document).ready(function(){
 
     $("#add-button").on("click", function(e){
         e.preventDefault()
-        $("#add-item").attr("placeholder", "add new item")
-        food.push($("#add-item").val())
-        $("#add-item").val("")
-        renderButtons()
+        if($("#add-item").val() == ""){
+            alert("Search box is empty!")
+            $("#add-item").focus()
+            $("#add-item").attr("placeholder", "")
+        }
+        else{
+            food.push($("#add-item").val())
+            $("#add-item").val("")
+            renderButtons()
+            $("#add-item").attr("placeholder", "add new item")
+        }
     })
 })
