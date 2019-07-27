@@ -62,18 +62,18 @@ function renderButtons(){
     })
 
     $("#add-item").keyup(function(e){
-        if(e.which == 8){
-            if(keyStrokes != 0){
-                keyStrokes--
+        if(keyStrokes != 20){
+            if(e.which == 8){
+                if(keyStrokes != 0){
+                    keyStrokes--
+                }
+            }
+            else{
+                keyStrokes++
             }
         }
         else{
-            if(keyStrokes != 20){
-                keyStrokes++
-            }
-            else{
-                alert("20 characters max!")
-            }
+            alert("20 characters max!")
         }
         console.log(keyStrokes)
         $("#char-remaining").text("Characters Remaining: " + (20 - keyStrokes))
