@@ -11,6 +11,7 @@ function ajax(searchItem){
         method: "GET"
     }).then(function(response){
         console.log(response)
+
         for(i=responseIndex; i<responseIndex+10; i++){
             var div = $("<div>")
             var img = $("<img>")
@@ -20,7 +21,14 @@ function ajax(searchItem){
             img.attr("animated-image", response.data[i].images.fixed_height.url)
             img.attr("src", img.attr("still-image"))
             img.attr("state", "still")
-            title.text(response.data[i].title.split("GIF")[0])
+
+            if(response.data[i].title.split("GIF")[0] == ""){
+                title.text("untitled")
+            }
+            else{
+                title.text(response.data[i].title.split("GIF")[0])
+            }
+
             title.addClass("title")
             rating.text("Rating: " + response.data[i].rating.toUpperCase())
             div.append(title)
@@ -30,7 +38,6 @@ function ajax(searchItem){
         }
 
         $("img").on("click", function(){
-
             if($(this).attr("state") == "still"){
                 $(this).attr("src", $(this).attr("animated-image"))
                 $(this).attr("state", "animated")
@@ -55,6 +62,8 @@ function renderButtons(){
     }
 
     $(".button").on("click", function(){
+        $(".button").css("background", "#939290")
+        $(this).css("background", "#DAAD38")
         $("#gifs").empty()
         $("#more-gifs-button").removeClass("btn-light").addClass("btn-success")
         var foodItem = $(this).data("food")
@@ -93,7 +102,6 @@ $(document).ready(function(){
     })
 
     $("#add-item").on("keyup", function(e){
-
         if(e.which == 8){
             if(keyStrokes != 0){
                 keyStrokes--
@@ -114,7 +122,6 @@ $(document).ready(function(){
     })
 
     $("#more-gifs-button").on("click", function(){
-
         if($(this).attr("class") != "btn btn-light"){
             queryURL = "https://api.giphy.com/v1/gifs/search?api_key=M5uE8mhUUUwubG4tLZfbkiAk6igcSkg8&limit=" + moreGifsLimit
             moreGifsLimit += 10
