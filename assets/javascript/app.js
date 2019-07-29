@@ -1,6 +1,9 @@
 var food = ["pizza","fried chicken","sandwich","bbq ribs","ice cream","cereal","hamburger","hot dog","egg roll","steak"]
 var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=M5uE8mhUUUwubG4tLZfbkiAk6igcSkg8&limit=10"
 var keyStrokes = 0
+var moreGifsLimit = 20
+var curGifIndex
+var responseIndex = 0
 
 function ajax(searchItem){
     $.ajax({
@@ -8,7 +11,7 @@ function ajax(searchItem){
         method: "GET"
     }).then(function(response){
         console.log(response)
-        for(i=0; i<10; i++){
+        for(i=responseIndex; i<responseIndex+10; i++){
             var div = $("<div>")
             var img = $("<img>")
             var rating = $("<p>")
@@ -23,7 +26,7 @@ function ajax(searchItem){
             div.append(title)
             div.append(img)
             div.append(rating)
-            $("#gifs").append(div)
+            $("#gifs").prepend(div)
         }
 
         $("img").on("click", function(){
@@ -53,8 +56,10 @@ function renderButtons(){
 
     $(".button").on("click", function(){
         $("#gifs").empty()
-        // $("#add-item").attr("placeholder", "add new item")
+        $("#more-gifs-button").removeClass("btn-light").addClass("btn-success")
         var foodItem = $(this).data("food")
+        curGifIndex = food.indexOf($(this).data("food"))
+        console.log(curGifIndex)
         ajax(foodItem)
     })
 
@@ -88,6 +93,7 @@ $(document).ready(function(){
     })
 
     $("#add-item").on("keyup", function(e){
+
         if(e.which == 8){
             if(keyStrokes != 0){
                 keyStrokes--
@@ -100,11 +106,22 @@ $(document).ready(function(){
             else{
                 console.log($("#add-item").val().length - 1)
                 $("#add-item").val($("#add-item").val().substring(0, $("#add-item").val().length - 1))
-                alert("20 characters max!")
+                alert("12 characters max!")
             }
         }
             
         $("#char-remaining").text("Characters: " + (12 - keyStrokes))
+    })
+
+    $("#more-gifs-button").on("click", function(){
+
+        if($(this).attr("class") != "btn btn-light"){
+            queryURL = "https://api.giphy.com/v1/gifs/search?api_key=M5uE8mhUUUwubG4tLZfbkiAk6igcSkg8&limit=" + moreGifsLimit
+            moreGifsLimit += 10
+            responseIndex += 10
+            console.log(moreGifsLimit)
+            ajax(food[curGifIndex])
+        }
     })
 })
 
