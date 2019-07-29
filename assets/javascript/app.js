@@ -104,7 +104,6 @@ $(document).ready(function(){
             }
         }
             
-        console.log(keyStrokes)
         $("#char-remaining").text("Characters: " + (12 - keyStrokes))
     })
 })

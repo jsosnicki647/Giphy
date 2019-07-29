@@ -1,15 +1,28 @@
 #add-item{
     border: 2px solid #A3DADF;
     max-width: 600px;
+    margin: 1em 0 0 .5em;
+}
+
+#add-button{
+    width: 70px;
+    margin: 0 0 1em .5em;
 }
 
 #char-remaining{
     padding-left: 6px;
+    margin-left: .25em;
 }
 
 .button{
     margin: 0 .5em .5em 0;
     width: 140px;
+    background: #939290;
+}
+
+.card-header{
+    background: #FD9EA2;
+    color: white;
 }
 
 .container{
@@ -26,6 +39,10 @@
 .title{
     margin-bottom: 0;
     font-weight: bold;
+}
+
+.card{
+    margin-bottom: 1em;
 }
 
 img{
