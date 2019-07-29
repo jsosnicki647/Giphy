@@ -53,30 +53,13 @@ function renderButtons(){
 
     $(".button").on("click", function(){
         $("#gifs").empty()
+        // $("#add-item").attr("placeholder", "add new item")
         var foodItem = $(this).data("food")
         ajax(foodItem)
     })
 
     $("#add-item").on("click", function(){
         $("#add-item").attr("placeholder", "")
-    })
-
-    $("#add-item").keyup(function(e){
-        if(keyStrokes != 20){
-            if(e.which == 8){
-                if(keyStrokes != 0){
-                    keyStrokes--
-                }
-            }
-            else{
-                keyStrokes++
-            }
-        }
-        else{
-            alert("20 characters max!")
-        }
-        console.log(keyStrokes)
-        $("#char-remaining").text("Characters Remaining: " + (20 - keyStrokes))
     })
 }
 
@@ -85,6 +68,9 @@ $(document).ready(function(){
 
     $("#add-button").on("click", function(e){
         e.preventDefault()
+        keyStrokes = 0
+        $("#char-remaining").text("Characters: 12")
+
         if($("#add-item").val() == ""){
             alert("Search box is empty!")
             $("#add-item").focus()
@@ -94,7 +80,32 @@ $(document).ready(function(){
             food.push($("#add-item").val())
             $("#add-item").val("")
             renderButtons()
-            $("#add-item").attr("placeholder", "add new item")
         }
     })
+
+    $("#add-item").focusout(function() {
+        $("#add-item").attr("placeholder", "add new item")
+    })
+
+    $("#add-item").on("keyup", function(e){
+        if(e.which == 8){
+            if(keyStrokes != 0){
+                keyStrokes--
+            }
+        }
+        else{
+            if(keyStrokes != 12){
+                keyStrokes++
+            }
+            else{
+                console.log($("#add-item").val().length - 1)
+                $("#add-item").val($("#add-item").val().substring(0, $("#add-item").val().length - 1))
+                alert("20 characters max!")
+            }
+        }
+            
+        console.log(keyStrokes)
+        $("#char-remaining").text("Characters: " + (12 - keyStrokes))
+    })
 })
+
