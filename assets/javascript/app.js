@@ -156,11 +156,7 @@ function renderButtons(){
             var index = parseInt($(this).attr("id"))
             $(this).parent().fadeOut(200)
             likes.splice(index,1)
-            console.log(likes)
-            console.log(index+1)
-            console.log(likeCount)
             for(i=index+1; i<likeCount+1; i++){
-                console.log("here")
                 localStorage.setItem("still-image" + (i-1), localStorage.getItem("still-image" + i))
                 localStorage.setItem("animated-image" + (i-1), localStorage.getItem("animated-image" + i))
                 localStorage.setItem("title" + (i-1), localStorage.getItem("title" + i))
@@ -243,7 +239,6 @@ $(document).ready(function(){
                 keyStrokes++
             }
             else{
-                console.log($("#add-item").val().length - 1)
                 $("#add-item").val($("#add-item").val().substring(0, $("#add-item").val().length - 1))
                 alert("12 characters max!")
             }
