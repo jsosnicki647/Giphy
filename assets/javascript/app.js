@@ -15,6 +15,8 @@ function ajax(searchItem){
         
         for(i=responseIndex; i<responseIndex+10; i++){
             var div = $("<div>")
+            var div2 = $("<div>")
+
             var img = $("<img>")
             var rating = $("<p>")
             var title = $("<p>")
@@ -26,27 +28,41 @@ function ajax(searchItem){
             img.attr("state", "still")
             img.attr("rating", response.data[i].rating.toUpperCase())
             
+            
 
             if(titleText == ""){
-                title.html("untitled" + "<button class='like' title='untitled' rating=" + response.data[i].rating.toUpperCase() + " still-image=" + response.data[i].images.fixed_height_still.url + " animated-image=" + response.data[i].images.fixed_height.url + " state='still'>x</button>")
+                title.html("untitled")
+                var button = $("<button class='like' title='untitled' rating=" + response.data[i].rating.toUpperCase() + " still-image=" + response.data[i].images.fixed_height_still.url + " animated-image=" + response.data[i].images.fixed_height.url + " state='still'>&#10084</button>")
                 img.attr("title", "untitled")
             }
             else{
-                title.html(titleText + "<button class='like' title='" + titleText + "' rating=" + response.data[i].rating.toUpperCase() + " still-image=" + response.data[i].images.fixed_height_still.url + " animated-image=" + response.data[i].images.fixed_height.url + " state='still'>x</button>")
+                title.html(titleText)
+                var button = $("<button class='like' title='" + titleText + "' rating=" + response.data[i].rating.toUpperCase() + " still-image=" + response.data[i].images.fixed_height_still.url + " animated-image=" + response.data[i].images.fixed_height.url + " state='still'>&#10084</button>")
                 img.attr("title", titleText)
             }
+
+            for(j=0; j<likes.length; j++){
+                if(likes[j][0] == button.attr("still-image")){
+                    button.css("background", "#007BFF")
+                }
+            }
+
+
 
             title.addClass("title")
             rating.text("Rating: " + response.data[i].rating.toUpperCase())
             div.append(title)
-            div.append(img)
-            div.append(rating)
+            div.append(button)
+            div2.append(img)
+            div2.append(rating)
+            div.append(div2)
             $("#gifs").prepend(div)
         }
 
         imgClickEvent()
 	
         $(".like").on("click", function(){
+            $(this).css("background", "#007BFF")
             var likeImages = []
             var img = $(this).attr("still-image")
             
@@ -86,13 +102,15 @@ function renderButtons(){
         var button = $("<button>")
 	if(i==0){
 		button.attr("id", "favorites")
-		button.addClass("btn btn-secondary")
+		button.addClass("btn btn-success")
 	}
 	else{
 		button.addClass("button btn btn-secondary")
 	}
         button.text(food[i])
         button.attr("data-food", food[i])
+        
+        
         
         $("#buttons").append(button)
     }
@@ -101,7 +119,7 @@ function renderButtons(){
 	    moreGifsLimit = 20
 	    responseIndex = 0
         $(".button").css("background", "#939290")
-        $("#favorites").css("background", "#A3DADF")
+        $("#favorites").css("background", "#28A745")
         $(this).css("background", "#DAAD38")
         $("#gifs").empty()
         $("#more-gifs-button").removeClass("btn-light").addClass("btn-success")
@@ -122,26 +140,32 @@ function renderButtons(){
         for(i=0; i<likes.length; i++){
             var img = $("<img>")
             var div = $("<div>")
+            var div2 = $("<div>")
+
             var title = $("<p class='title'>")
             var rating = $("<p>")
             img.attr("src", likes[i][0])
             img.attr("still-image", likes[i][0])
             img.attr("animated-image", likes[i][1])
-            title.html(likes[i][2] + "<button class='unlike'>x</button>")
+            title.html(likes[i][2])
+            var button = $("<button id=" + i + " class='unlike'>X</button>")
+            button.addClass("btn btn-danger")
             rating.text("Rating: " + likes[i][3])
             img.attr("state", "still")
             div.append(title)
-            div.append(img)
-            div.append(rating)
+            div.append(button)
+            div2.append(img)
+            div2.append(rating)
+            div.append(div2)
             $("#gifs").append(div)
         }
         imgClickEvent()
         $(".unlike").on("click",function(){
-            $(this).parent().parent().fadeOut(200)
-            if(likeCount != 0){
-                likeCount--
-                localStorage.setItem("likeCount", likeCount)
-            }
+            $(this).parent().fadeOut(200)
+            likeCount--
+            likes.splice($(this).attr("id"),1)
+            console.log(likes)
+            localStorage.setItem("likeCount", likeCount)
         })
     })
 }      
