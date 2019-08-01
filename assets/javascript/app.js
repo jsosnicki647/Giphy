@@ -1,11 +1,11 @@
-var food = ["favorites","pizza","fried chicken","sandwich","bbq ribs","ice cream","cereal","hamburger","hot dog","egg roll","steak"]
+var food = ["favorites","pizza","fried chicken","sandwich","bbq ribs","ice cream","cereal","hamburger","hot dog","egg roll","steak"] //starter buttons
 var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=M5uE8mhUUUwubG4tLZfbkiAk6igcSkg8&limit=10"
-var keyStrokes = 0
-var moreGifsLimit = 20
-var curGifIndex
-var responseIndex = 0
-var likes = []
-var likeCount
+var keyStrokes = 0 //count of keystrokes entered in add-item input
+var moreGifsLimit = 20 //increases number of gifs shown when more-gifs-button clicked
+var curGifIndex //the index within the food array for the current gif
+var responseIndex = 0 //starting point for api call when more-gifs-button clicked
+var likes = [] //stores gifs when like button clicked
+var likeCount //counts the number of likes
 
 function ajax(searchItem){
     $.ajax({
@@ -59,7 +59,7 @@ function ajax(searchItem){
             var likeImages = []
             var img = $(this).attr("still-image")
             
-            if(!likesArrayIndexChecker(likes, img)){
+            if(!likesArrayIndexChecker(likes, img)){ //checks if gif is already stored in likes array
                 likeImages[0] = $(this).attr("still-image")
                 likeImages[1] = $(this).attr("animated-image")
                 likeImages[2] = $(this).attr("title")
@@ -74,18 +74,6 @@ function ajax(searchItem){
             }
         })
    })
-}
-
-function likesArrayIndexChecker(array, element){
-    for(i=0; i<array.length; i++){
-        for(j=0; j<4; j++){
-            if(array[i][j] == element){
-                return true
-                break
-            }
-        }
-    }
-    return false
 }
 
 function renderButtons(){
@@ -156,6 +144,7 @@ function renderButtons(){
             var index = parseInt($(this).attr("id"))
             $(this).parent().fadeOut(200)
             likes.splice(index,1)
+
             for(i=index+1; i<likeCount+1; i++){
                 localStorage.setItem("still-image" + (i-1), localStorage.getItem("still-image" + i))
                 localStorage.setItem("animated-image" + (i-1), localStorage.getItem("animated-image" + i))
@@ -167,16 +156,13 @@ function renderButtons(){
             localStorage.removeItem("animated-image" + likeCount)
             localStorage.removeItem("title" + likeCount)
             localStorage.removeItem("rating" + likeCount)
-
             likeCount--
             localStorage.setItem("likeCount", likeCount)
-
-
         })
     })
 }      
 
-function imgClickEvent(){
+function imgClickEvent(){ //attaches on click even to all images
     $("img").on("click", function(){
         if($(this).attr("state") == "still"){
             $(this).attr("src", $(this).attr("animated-image"))
@@ -189,10 +175,22 @@ function imgClickEvent(){
     })
 }
 
+function likesArrayIndexChecker(array, element){ //checks if element is in multidimensional likes array
+    for(i=0; i<array.length; i++){
+        for(j=0; j<4; j++){
+            if(array[i][j] == element){
+                return true
+                break
+            }
+        }
+    }
+    return false
+}
+
 $(document).ready(function(){
     renderButtons()
     likeCount = localStorage.getItem("likeCount")
-    // localStorage.clear()
+
     if(likeCount != null){
         for(i=0; i<likeCount; i++){
             var likeImages = []
@@ -228,7 +226,7 @@ $(document).ready(function(){
         $("#add-item").attr("placeholder", "add new item")
     })
 
-    $("#add-item").on("keyup", function(e){
+    $("#add-item").on("keyup", function(e){ //counts how many characters are typed into add-item input
         if(e.which == 8){
             if(keyStrokes != 0){
                 keyStrokes--
