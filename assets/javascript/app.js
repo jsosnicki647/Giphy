@@ -12,34 +12,29 @@ function ajax(searchItem){
         url: queryURL + "&q=" + searchItem,
         method: "GET"
     }).then(function(response){
-        
         for(i=responseIndex; i<responseIndex+10; i++){
-            var div = $("<div>")
-            var div2 = $("<div>")
-
+            var divTitleButton = $("<div>")
+            var divImgRating = $("<div>")
             var img = $("<img>")
             var rating = $("<p>")
             var title = $("<p>")
             var titleText = response.data[i].title.split("GIF")[0].trim()
-	    
-            img.attr("still-image", response.data[i].images.fixed_height_still.url)
-            img.attr("animated-image", response.data[i].images.fixed_height.url)
+            var stillURL = response.data[i].images.fixed_height_still.url
+            var animatedURL = response.data[i].images.fixed_height.url
+            var ratingText = response.data[i].rating.toUpperCase()
+            img.attr("still-image", stillURL)
+            img.attr("animated-image", animatedURL)
             img.attr("src", img.attr("still-image"))
             img.attr("state", "still")
-            img.attr("rating", response.data[i].rating.toUpperCase())
-            
-            
+            img.attr("rating", ratingText)
 
             if(titleText == ""){
-                title.html("untitled")
-                var button = $("<button class='like' title='untitled' rating=" + response.data[i].rating.toUpperCase() + " still-image=" + response.data[i].images.fixed_height_still.url + " animated-image=" + response.data[i].images.fixed_height.url + " state='still'>&#10084</button>")
-                img.attr("title", "untitled")
+                titleText="untitled"
             }
-            else{
-                title.html(titleText)
-                var button = $("<button class='like' title='" + titleText + "' rating=" + response.data[i].rating.toUpperCase() + " still-image=" + response.data[i].images.fixed_height_still.url + " animated-image=" + response.data[i].images.fixed_height.url + " state='still'>&#10084</button>")
-                img.attr("title", titleText)
-            }
+            
+            img.attr("title", titleText)
+            title.html(titleText)
+            var button = $("<button class='like' title='" + titleText + "' rating=" + ratingText + " still-image=" + stillURL + " animated-image=" + animatedURL + " state='still'>&#10084</button>")
 
             for(j=0; j<likes.length; j++){
                 if(likes[j][0] == button.attr("still-image")){
@@ -47,16 +42,14 @@ function ajax(searchItem){
                 }
             }
 
-
-
             title.addClass("title")
-            rating.text("Rating: " + response.data[i].rating.toUpperCase())
-            div.append(title)
-            div.append(button)
-            div2.append(img)
-            div2.append(rating)
-            div.append(div2)
-            $("#gifs").prepend(div)
+            rating.text("Rating: " + ratingText)
+            divTitleButton.append(title)
+            divTitleButton.append(button)
+            divImgRating.append(img)
+            divImgRating.append(rating)
+            divTitleButton.append(divImgRating)
+            $("#gifs").prepend(divTitleButton)
         }
 
         imgClickEvent()
@@ -100,20 +93,18 @@ function renderButtons(){
     
     for(i=0; i<food.length; i++){
         var button = $("<button>")
-	if(i==0){
-		button.attr("id", "favorites")
-		button.addClass("btn btn-success")
-	}
-	else{
-		button.addClass("button btn btn-secondary")
-	}
-        button.text(food[i])
-        button.attr("data-food", food[i])
-        
-        
-        
-        $("#buttons").append(button)
-    }
+
+        if(i==0){
+            button.attr("id", "favorites")
+            button.addClass("btn btn-success")
+        }
+        else{
+            button.addClass("button btn btn-secondary")
+        }
+            button.text(food[i])
+            button.attr("data-food", food[i])
+            $("#buttons").append(button)
+        }
 
     $(".button").on("click", function(){
 	    moreGifsLimit = 20
@@ -139,9 +130,8 @@ function renderButtons(){
         
         for(i=0; i<likes.length; i++){
             var img = $("<img>")
-            var div = $("<div>")
-            var div2 = $("<div>")
-
+            var divTitleButton = $("<div>")
+            var divImgRating = $("<div>")
             var title = $("<p class='title'>")
             var rating = $("<p>")
             img.attr("src", likes[i][0])
@@ -152,25 +142,43 @@ function renderButtons(){
             button.addClass("btn btn-danger")
             rating.text("Rating: " + likes[i][3])
             img.attr("state", "still")
-            div.append(title)
-            div.append(button)
-            div2.append(img)
-            div2.append(rating)
-            div.append(div2)
-            $("#gifs").append(div)
+            divTitleButton.append(title)
+            divTitleButton.append(button)
+            divImgRating.append(img)
+            divImgRating.append(rating)
+            divTitleButton.append(divImgRating)
+            $("#gifs").append(divTitleButton)
         }
+
         imgClickEvent()
+
         $(".unlike").on("click",function(){
+            var index = parseInt($(this).attr("id"))
             $(this).parent().fadeOut(200)
-            likeCount--
-            likes.splice($(this).attr("id"),1)
+            likes.splice(index,1)
             console.log(likes)
+            console.log(index+1)
+            console.log(likeCount)
+            for(i=index+1; i<likeCount+1; i++){
+                console.log("here")
+                localStorage.setItem("still-image" + (i-1), localStorage.getItem("still-image" + i))
+                localStorage.setItem("animated-image" + (i-1), localStorage.getItem("animated-image" + i))
+                localStorage.setItem("title" + (i-1), localStorage.getItem("title" + i))
+                localStorage.setItem("rating" + (i-1), localStorage.getItem("rating" + i))
+            }
+
+            localStorage.removeItem("still-image" + likeCount)
+            localStorage.removeItem("animated-image" + likeCount)
+            localStorage.removeItem("title" + likeCount)
+            localStorage.removeItem("rating" + likeCount)
+
+            likeCount--
             localStorage.setItem("likeCount", likeCount)
+
+
         })
     })
 }      
-
-
 
 function imgClickEvent(){
     $("img").on("click", function(){
@@ -188,7 +196,7 @@ function imgClickEvent(){
 $(document).ready(function(){
     renderButtons()
     likeCount = localStorage.getItem("likeCount")
-    console.log(likeCount)
+    // localStorage.clear()
     if(likeCount != null){
         for(i=0; i<likeCount; i++){
             var likeImages = []
