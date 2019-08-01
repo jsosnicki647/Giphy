@@ -19,6 +19,16 @@
     margin-left: .25em;
 }
 
+#gifs{
+   margin: 2em 0 0 0;
+}
+
+#favorites{
+   background: #A3DADF;
+margin: 0 .5em .5em 0;
+    width: 140px;
+}
+
 .button{
     margin: 0 .5em .5em 0;
     width: 140px;
@@ -62,4 +72,3 @@ form{
 body{
     background-image: url("../images/background.jpg");
 }
-
