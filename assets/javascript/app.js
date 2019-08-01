@@ -5,6 +5,7 @@ var moreGifsLimit = 20
 var curGifIndex
 var responseIndex = 0
 var likes = []
+var likeCount
 
 function ajax(searchItem){
     $.ajax({
@@ -34,10 +35,9 @@ function ajax(searchItem){
                 title.html(titleText + "<button class='like' title='" + titleText + "' rating=" + response.data[i].rating.toUpperCase() + " still-image=" + response.data[i].images.fixed_height_still.url + " animated-image=" + response.data[i].images.fixed_height.url + " state='still'>x</button>")
                 img.attr("title", titleText)
             }
-            console.log(titleText)
+
             title.addClass("title")
             rating.text("Rating: " + response.data[i].rating.toUpperCase())
-	    
             div.append(title)
             div.append(img)
             div.append(rating)
@@ -48,16 +48,35 @@ function ajax(searchItem){
 	
         $(".like").on("click", function(){
             var likeImages = []
-
-            if(likes.indexOf($(this).attr("still-image")) == -1){
+            var img = $(this).attr("still-image")
+            
+            if(!likesArrayIndexChecker(likes, img)){
                 likeImages[0] = $(this).attr("still-image")
                 likeImages[1] = $(this).attr("animated-image")
                 likeImages[2] = $(this).attr("title")
                 likeImages[3] = $(this).attr("rating")
                 likes.push(likeImages)
+                localStorage.setItem("still-image" + likeCount, likeImages[0])
+                localStorage.setItem("animated-image" + likeCount, likeImages[1])
+                localStorage.setItem("title" + likeCount, likeImages[2])
+                localStorage.setItem("rating" + likeCount, likeImages[3])
+                likeCount++
+                localStorage.setItem("likeCount", likeCount)
             }
         })
    })
+}
+
+function likesArrayIndexChecker(array, element){
+    for(i=0; i<array.length; i++){
+        for(j=0; j<4; j++){
+            if(array[i][j] == element){
+                return true
+                break
+            }
+        }
+    }
+    return false
 }
 
 function renderButtons(){
@@ -82,6 +101,7 @@ function renderButtons(){
 	    moreGifsLimit = 20
 	    responseIndex = 0
         $(".button").css("background", "#939290")
+        $("#favorites").css("background", "#A3DADF")
         $(this).css("background", "#DAAD38")
         $("#gifs").empty()
         $("#more-gifs-button").removeClass("btn-light").addClass("btn-success")
@@ -96,9 +116,10 @@ function renderButtons(){
 	
     $("#favorites").on("click", function(){
         $("#gifs").empty()
+        $(this).css("background", "#DAAD38")
+        $(".button").css("background", "#939290")
         
         for(i=0; i<likes.length; i++){
-            console.log(likes)
             var img = $("<img>")
             var div = $("<div>")
             var title = $("<p class='title'>")
@@ -107,7 +128,7 @@ function renderButtons(){
             img.attr("still-image", likes[i][0])
             img.attr("animated-image", likes[i][1])
             title.html(likes[i][2] + "<button class='unlike'>x</button>")
-            rating.text(likes[i][3])
+            rating.text("Rating: " + likes[i][3])
             img.attr("state", "still")
             div.append(title)
             div.append(img)
@@ -117,6 +138,10 @@ function renderButtons(){
         imgClickEvent()
         $(".unlike").on("click",function(){
             $(this).parent().parent().fadeOut(200)
+            if(likeCount != 0){
+                likeCount--
+                localStorage.setItem("likeCount", likeCount)
+            }
         })
     })
 }      
@@ -138,6 +163,21 @@ function imgClickEvent(){
 
 $(document).ready(function(){
     renderButtons()
+    likeCount = localStorage.getItem("likeCount")
+    console.log(likeCount)
+    if(likeCount != null){
+        for(i=0; i<likeCount; i++){
+            var likeImages = []
+            likeImages[0] = localStorage.getItem("still-image" + i)
+            likeImages[1] = localStorage.getItem("animated-image" + i)
+            likeImages[2] = localStorage.getItem("title" + i)
+            likeImages[3] = localStorage.getItem("rating" + i)
+            likes.push(likeImages)
+        }
+    }
+    else{
+        likeCount = 0
+    }
 
     $("#add-button").on("click", function(e){
         e.preventDefault()
@@ -184,7 +224,6 @@ $(document).ready(function(){
             queryURL = "https://api.giphy.com/v1/gifs/search?api_key=M5uE8mhUUUwubG4tLZfbkiAk6igcSkg8&limit=" + moreGifsLimit
             moreGifsLimit += 10
             responseIndex += 10
-            console.log(moreGifsLimit)
             ajax(food[curGifIndex])
         }
     })
