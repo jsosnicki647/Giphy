@@ -1,0 +1,82 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Merriweather', serif;
+    outline: none;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+body{
+    background: #f2f2f2;
+    background-image: url("../images/background.jpg");
+
+}
+
+.container{
+    padding: 0 20px;
+}
+
+.sub-container{
+    max-width: 280px;
+    width: 100%;
+    height: 400px;
+    margin: 150px auto 0;
+    display: flex;
+    background: #fff;
+    box-shadow: 0 0 5px 2px;
+}
+
+.sub-container .login-form{
+    width: 280px;
+    height: 100%;
+    text-align: center;
+    padding: 40px 35px 0;
+    position: relative;
+}
+
+.sub-container .login-form .title{
+    color: #FD9EA2;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+.sub-container .login-form .label{
+    color: #524a4a;
+    font-size: 14px;
+    letter-spacing: 2px;
+}
+
+.sub-container .login-form .input{
+    margin: 5px 0 15px;
+    width: 100%;
+    padding: 8px;
+}
+
+.sub-container .login-form .forgot a{
+    color: #FD9EA2;
+    font-size: 18px;
+}
+
+.sub-container .btn{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 12px;
+    background: #A3DADF;
+    color: #fff;
+    font-size: 20px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.jumbotron{
+    background: #A3DADF;
+    color: white;
+    margin-top: 1em;
+}

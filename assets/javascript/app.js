@@ -226,7 +226,7 @@ $(document).ready(function(){
         $("#add-item").attr("placeholder", "add new item")
     })
 
-    $("#add-item").on("keyup", function(e){ //counts how many characters are typed into add-item input
+    $("#add-item").on("keyup", function(e){ //counts how many characters are typed in add-item input
         if(e.which == 8){
             if(keyStrokes != 0){
                 keyStrokes--
