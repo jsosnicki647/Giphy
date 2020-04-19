@@ -2,9 +2,10 @@
   "name": "Giphy",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -16,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/jsosnicki647/Giphy/issues"
   },
-  "homepage": "https://github.com/jsosnicki647/Giphy#readme"
+  "homepage": "https://github.com/jsosnicki647/Giphy#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
